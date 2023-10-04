@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:theme="@style/ICA_show_style"
+        tools:context=".ShowICAPatchesActivity">
+
+        <TextView
+            style="@style/home_page_neuro_sense_heading_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/app_background_color_ica"
+            android:paddingStart="16dp"
+            android:paddingTop="16dp"
+            android:text="@string/ica_patches_"
+            android:textAlignment="center"
+            android:textColor="#A9D9D9"
+            android:textSize="48sp"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="MissingConstraints" />
+
+        <ImageView
+            android:id="@+id/iv_show_ica_patches"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/ica_patches"
+            android:paddingStart="16dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="24dp"
+            android:paddingBottom="16dp"
+            android:src="@drawable/camera"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/camera" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
