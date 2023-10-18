@@ -86,7 +86,7 @@ class SelectImageGalleryOrCapture : AppCompatActivity() {
         }
 
         binding.buttonTakePicture.setOnClickListener {
-                launchCamera()
+            launchCamera()
         }
 
         mainViewModel.outputProcessedImagePath.observe(this) {
@@ -176,36 +176,33 @@ class SelectImageGalleryOrCapture : AppCompatActivity() {
         // Create the capture image intent
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
 
-//        if (takePictureIntent.resolveActivity(packageManager) != null) {
-            // Create the temporary File where the photo should go
-            var photoFile: File? = null
-            try {
-                photoFile = BitmapUtils.createTempImageFile(this)
-            } catch (ex: IOException) {
-                // Error occurred while creating the File
-                ex.printStackTrace()
-            }
+        var photoFile: File? = null
+        try {
+            photoFile = BitmapUtils.createTempImageFile(this)
+        } catch (ex: IOException) {
+            // Error occurred while creating the File
+            ex.printStackTrace()
+        }
 
-            // Continue only if the File was successfully created
-            if (photoFile != null) {
+        // Continue only if the File was successfully created
+        if (photoFile != null) {
 
-                // Get the path of the temporary file
-                currentPhotoPath = photoFile.absolutePath
+            // Get the path of the temporary file
+            currentPhotoPath = photoFile.absolutePath
 
-                // Get the content URI for the image file
-                val photoURI = FileProvider.getUriForFile(this,
-                    FILE_PROVIDER_AUTHORITY,
-                    photoFile)
+            // Get the content URI for the image file
+            val photoURI = FileProvider.getUriForFile(this,
+                FILE_PROVIDER_AUTHORITY,
+                photoFile)
 
 
-                // Add the URI so the camera can store the image
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+            // Add the URI so the camera can store the image
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
 
-                // Launch the camera activity
-                startActivityForResult(takePictureIntent,
-                    REQUEST_IMAGE_CAPTURE)
-            }
-//        }
+            // Launch the camera activity
+            startActivityForResult(takePictureIntent,
+                REQUEST_IMAGE_CAPTURE)
+        }
     }
 
     private fun hideActionBar() {
@@ -234,21 +231,6 @@ class SelectImageGalleryOrCapture : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK && data != null) {
             processAndSetImage()
-            /*Toast.makeText(this, data.data.toString(), Toast.LENGTH_SHORT).show()
-            if (data.data != null) {
-                val selectedImage: Uri = data.data!!
-                val inputStream = contentResolver.openInputStream(selectedImage)
-                selectedBitmap = BitmapFactory.decodeStream(inputStream)
-                imagePath = getImagePathFromUri(data.data!!)
-                Toast.makeText(this, imagePath, Toast.LENGTH_SHORT).show()
-
-                binding.imageSelectedImagePreview.setImageBitmap(selectedBitmap)
-                showProcessButtonAndText()
-            } else {
-                Toast.makeText(this, "the selected image didn't give anything", Toast.LENGTH_SHORT)
-                    .show()
-            }*/
-            // Use the imageBitmap to display or save the captured image
         }
 
         if (requestCode == REQUEST_CODE_PICK_IMAGE && resultCode == RESULT_OK && data != null) {
@@ -279,8 +261,6 @@ class SelectImageGalleryOrCapture : AppCompatActivity() {
         // Resample the saved image to fit the ImageView
         mResultsBitmap = BitmapUtils.resamplePic(this, currentPhotoPath)
         selectedBitmap = BitmapFactory.decodeFile(currentPhotoPath)
-
-        // Set the new bitmap to the ImageView
 
         // Set the new bitmap to the ImageView
         binding.imageSelectedImagePreview.setImageBitmap(mResultsBitmap)
