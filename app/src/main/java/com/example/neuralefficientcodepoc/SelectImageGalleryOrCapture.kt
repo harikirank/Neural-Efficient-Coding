@@ -76,7 +76,7 @@ class SelectImageGalleryOrCapture : AppCompatActivity() {
                 progressDialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
                 progressDialog?.setCancelable(false)
                 // Start a Coroutine to perform the time-consuming task
-                CoroutineScope(Dispatchers.IO).launch {
+                CoroutineScope(Dispatchers.Main).launch {
                     mainViewModel.processImage(
                         imagePath!!)
                 }

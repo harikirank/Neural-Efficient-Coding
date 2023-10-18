@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -21,7 +22,7 @@ class SelectImageGalleryOrCaptureViewModel(application: Application) :
 
         imagePath: String,
     ) {
-        viewModelScope.launch {
+        CoroutineScope(Dispatchers.IO).launch {
             val py = app.pythonInstance
 
             val imageProcessor = py.getModule("multimodal_efficient_coding_integration")
