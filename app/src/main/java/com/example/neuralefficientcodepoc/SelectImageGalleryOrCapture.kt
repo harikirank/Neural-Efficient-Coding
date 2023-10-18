@@ -14,16 +14,20 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.provider.Settings
 import android.view.View
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.databinding.DataBindingUtil
 import com.example.neuralefficientcodepoc.databinding.ActivitySelectImageGalleryOrCaptureBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.io.File
+import java.io.IOException
 
 const val REQUEST_IMAGE_CAPTURE = 1
 const val REQUEST_CODE_PICK_IMAGE = 2
@@ -33,9 +37,16 @@ class SelectImageGalleryOrCapture : AppCompatActivity() {
     private lateinit var selectedBitmap: Bitmap
     val MANAGE_EXTERNAL_STORAGE_REQUEST = 124
     var progressDialog: ProgressDialog? = null
+    private var mResultsBitmap: Bitmap? = null
+    var photoPreview: ImageView? = null
+    private var currentPhotoPath: String? = null
+    private var mAppExecutor: AppExecutor? = null
+    private var REQUEST_IMAGE_CAPTURE = 389
+    private var REQUEST_STORAGE_PERMISSION = 390
     private val REQUEST_PERMISSIONS_CODE = 123 // Request code for permission request
     private var imagePath: String? = null
     private lateinit var progressBarDialogFragment: ProgressBarDialogFragment
+    private val FILE_PROVIDER_AUTHORITY = "com.example.neuralefficientcodepoc.fileprovider"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +54,8 @@ class SelectImageGalleryOrCapture : AppCompatActivity() {
             DataBindingUtil.setContentView(this, R.layout.activity_select_image_gallery_or_capture)
         hideActionBar()
         val mainViewModel by viewModels<SelectImageGalleryOrCaptureViewModel>()
+        mAppExecutor = AppExecutor()
+
 
         binding.captureImage.setOnClickListener {
             dispatchCaptureImageIntent()
@@ -72,9 +85,12 @@ class SelectImageGalleryOrCapture : AppCompatActivity() {
             }
         }
 
+        binding.buttonTakePicture.setOnClickListener {
+                launchCamera()
+        }
+
         mainViewModel.outputProcessedImagePath.observe(this) {
             progressDialog?.dismiss()
-//            progressBarDialogFragment.dismiss()
 
             val intent = Intent(this, ShowICAPatchesActivity::class.java)
             intent.putExtra("output_image_path", it)
@@ -154,8 +170,42 @@ class SelectImageGalleryOrCapture : AppCompatActivity() {
             // Permission is already granted or not required, you can proceed with file access
         }
         // -----------------------------------------------------------------------------------------
+    }
+
+    private fun launchCamera() {
+        // Create the capture image intent
+        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+
+//        if (takePictureIntent.resolveActivity(packageManager) != null) {
+            // Create the temporary File where the photo should go
+            var photoFile: File? = null
+            try {
+                photoFile = BitmapUtils.createTempImageFile(this)
+            } catch (ex: IOException) {
+                // Error occurred while creating the File
+                ex.printStackTrace()
+            }
+
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+
+                // Get the path of the temporary file
+                currentPhotoPath = photoFile.absolutePath
+
+                // Get the content URI for the image file
+                val photoURI = FileProvider.getUriForFile(this,
+                    FILE_PROVIDER_AUTHORITY,
+                    photoFile)
 
 
+                // Add the URI so the camera can store the image
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+
+                // Launch the camera activity
+                startActivityForResult(takePictureIntent,
+                    REQUEST_IMAGE_CAPTURE)
+            }
+//        }
     }
 
     private fun hideActionBar() {
@@ -183,7 +233,8 @@ class SelectImageGalleryOrCapture : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK && data != null) {
-            Toast.makeText(this, data.data.toString(), Toast.LENGTH_SHORT).show()
+            processAndSetImage()
+            /*Toast.makeText(this, data.data.toString(), Toast.LENGTH_SHORT).show()
             if (data.data != null) {
                 val selectedImage: Uri = data.data!!
                 val inputStream = contentResolver.openInputStream(selectedImage)
@@ -196,7 +247,7 @@ class SelectImageGalleryOrCapture : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "the selected image didn't give anything", Toast.LENGTH_SHORT)
                     .show()
-            }
+            }*/
             // Use the imageBitmap to display or save the captured image
         }
 
@@ -218,6 +269,54 @@ class SelectImageGalleryOrCapture : AppCompatActivity() {
                     .show()
             }
 
+        }
+        binding.buttonProcessImage.visibility = View.VISIBLE
+        binding.processImage.visibility = View.VISIBLE
+        binding.textViewCloser.visibility = View.VISIBLE
+    }
+
+    private fun processAndSetImage() {
+        // Resample the saved image to fit the ImageView
+        mResultsBitmap = BitmapUtils.resamplePic(this, currentPhotoPath)
+        selectedBitmap = BitmapFactory.decodeFile(currentPhotoPath)
+
+        // Set the new bitmap to the ImageView
+
+        // Set the new bitmap to the ImageView
+        binding.imageSelectedImagePreview.setImageBitmap(mResultsBitmap)
+
+
+        //Save Image!!!
+        mAppExecutor?.diskIO()?.execute {
+
+            // Delete the temporary image file
+            BitmapUtils.deleteImageFile(this, currentPhotoPath)
+
+            // Save the image
+            imagePath = BitmapUtils.saveImage(this, mResultsBitmap)
+        }
+
+        Toast.makeText(this, "Saved the image", Toast.LENGTH_SHORT).show()
+
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String?>,
+        grantResults: IntArray,
+    ) {
+        // Called when you request permission to read and write to external storage
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            REQUEST_STORAGE_PERMISSION -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // If you get permission, launch the camera
+                    launchCamera()
+                } else {
+                    // If you do not get permission, show a Toast
+                    Toast.makeText(this, R.string.permission_denied, Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 
