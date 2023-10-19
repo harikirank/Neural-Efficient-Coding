@@ -4,7 +4,7 @@ import numpy as np
 
 
 def process_image(image_path):
-    num_patches = 5000
+    num_patches = 50000
     patch_width = 16
     num_patches_to_show = 25
 
