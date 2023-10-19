@@ -234,13 +234,11 @@ class SelectImageGalleryOrCapture : AppCompatActivity() {
         }
 
         if (requestCode == REQUEST_CODE_PICK_IMAGE && resultCode == RESULT_OK && data != null) {
-            Toast.makeText(this, data.data.toString(), Toast.LENGTH_SHORT).show()
             if (data.data != null) {
                 val selectedImage: Uri = data.data!!
                 val inputStream = contentResolver.openInputStream(selectedImage)
                 selectedBitmap = BitmapFactory.decodeStream(inputStream)
                 imagePath = getImagePathFromUri(data.data!!)
-                Toast.makeText(this, imagePath, Toast.LENGTH_SHORT).show()
 
                 inputStream?.close()
 
@@ -275,9 +273,6 @@ class SelectImageGalleryOrCapture : AppCompatActivity() {
             // Save the image
             imagePath = BitmapUtils.saveImage(this, mResultsBitmap)
         }
-
-        Toast.makeText(this, "Saved the image", Toast.LENGTH_SHORT).show()
-
     }
 
     override fun onRequestPermissionsResult(
