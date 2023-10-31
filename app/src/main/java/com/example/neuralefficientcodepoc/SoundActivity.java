@@ -8,20 +8,26 @@ import android.media.MediaRecorder;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.View;
 import android.widget.Chronometer;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import com.arthenica.ffmpegkit.FFmpegKit;
+import com.arthenica.ffmpegkit.FFmpegSession;
+import com.arthenica.ffmpegkit.ReturnCode;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+//import com.arthenica.ffmpegkit.FFmpegKit;
 
 public class SoundActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -116,9 +122,34 @@ public class SoundActivity extends AppCompatActivity implements View.OnClickList
 
 
     private void stopRecording() {
+        String recordPath = SoundActivity.this.getExternalFilesDir("/").getAbsolutePath();
+
         timer.stop();
         recordFilename_TextView.setText("Recording stopped:\n" + recordFile + " was saved.\n Click on the file icon\n to choose a file for processing.");
         mediaRecorder.stop();
+
+        FFmpegSession session = FFmpegKit.execute("-i " + recordPath + "/" + recordFile + ".3gp -acodec pcm_s16le -ar 44100 " + recordPath + "/" + recordFile + ".wav");
+        if (ReturnCode.isSuccess(session.getReturnCode())) {
+            // SUCCESS
+            File fileToDelete = new File(recordPath + "/" + recordFile + ".3gp");
+
+            if (fileToDelete.exists()) {
+                boolean deleted = fileToDelete.delete();
+                if (deleted) {
+                    // File deleted successfully
+                } else {
+                    // Failed to delete the file
+                }
+            } else {
+                // File does not exist at the specified path
+            }
+        } else if (ReturnCode.isCancel(session.getReturnCode())) {
+            // CANCEL
+        } else {
+            // FAILURE
+            Log.d("Audio Failure", String.format("Command failed with state %s and rc %s.%s", session.getState(), session.getReturnCode(), session.getFailStackTrace()));
+        }
+
         mediaRecorder.release();
         mediaRecorder = null;
     }
@@ -140,7 +171,7 @@ public class SoundActivity extends AppCompatActivity implements View.OnClickList
         //Get access to phone MIC
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-        mediaRecorder.setOutputFile(recordPath + "/" + recordFile);
+        mediaRecorder.setOutputFile(recordPath + "/" + recordFile + ".3gp");
         mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
 
         try {
