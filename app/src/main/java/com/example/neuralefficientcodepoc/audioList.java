@@ -266,7 +266,7 @@ public class audioList extends AppCompatActivity implements AudioListAdaptor.onI
                 }
                 break;
             case R.id.process_audio_Btn:
-                Intent resultImageActivityIntent = new Intent(audioList.this, SoundProcessedResults.class);
+                Intent resultImageActivityIntent = new Intent(audioList.this, SoundProcessedResultsActivity.class);
                 resultImageActivityIntent.putExtra("fileToPlay", fileToPlay);
                 startActivity(resultImageActivityIntent);
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
