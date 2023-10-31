@@ -37,6 +37,13 @@
                 android:value="" />
         </activity>
         <activity
+            android:name=".SoundProcessedResultsActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".SelectImageGalleryOrCapture"
             android:screenOrientation="portrait"
             android:exported="false">
