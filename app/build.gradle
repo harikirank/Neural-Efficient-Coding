@@ -14,7 +14,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.neuralefficientcodepoc"
-        minSdk 21
+        minSdk 24
         targetSdk 33
         versionCode 1
         versionName "1.0"
@@ -87,4 +87,7 @@ dependencies {
     implementation 'com.jjoe64:graphview:4.2.2'
     // Open CV
 //    implementation 'org.opencv:opencv-android:4.5.3'
+
+    // ffmpeg. But this will increase the minsdk to 24
+    implementation 'com.arthenica:ffmpeg-kit-full:4.5.1-1'
 }
