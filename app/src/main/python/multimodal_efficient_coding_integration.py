@@ -18,3 +18,10 @@ def process_image(image_path):
                                                                    num_patches_to_show)
 
     return output_processed_image_path
+
+
+def process_audio(audio_file_path):
+    audio_patches = ica_helper_methods.collectPatchesAudio(audio_file_path)
+    output_processed_audio_image_path = ica_helper_methods.showPatchesAudio(audio_patches)
+
+    return output_processed_audio_image_path
