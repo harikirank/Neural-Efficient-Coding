@@ -24,25 +24,52 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/text_neuro"
-            style="@style/home_page_neuro_sense_heading_style"
-            android:layout_marginStart="300dp"
+            android:id="@+id/text_test_neuro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@string/neuro"
-            android:textColor="#FFFFFF"
-            app:layout_constraintEnd_toStartOf="@id/text_sense"
-            app:layout_constraintHorizontal_bias="0.4"
+            android:textSize="55sp"
+            android:textStyle="bold"
+            android:fontFamily="@font/noway_regular"
+            android:textColor="#fff"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
+            android:layout_marginRight="120dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
         <TextView
-            android:id="@+id/text_sense"
-            style="@style/home_page_neuro_sense_heading_style"
-            android:layout_marginEnd="280dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/text_test_sense"
+            app:layout_constraintStart_toEndOf="@id/text_test_neuro"
             android:text="@string/sense"
             android:textColor="#A9D9D9"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/text_neuro"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:fontFamily="@font/noway_regular"
+            android:textSize="55sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="@id/text_test_neuro"
+            />
+
+<!--        <TextView-->
+<!--            android:id="@+id/text_neuro"-->
+<!--            style="@style/home_page_neuro_sense_heading_style"-->
+<!--            android:layout_marginStart="300dp"-->
+<!--            android:text="@string/neuro"-->
+<!--            android:textColor="#FFFFFF"-->
+<!--            app:layout_constraintEnd_toStartOf="@id/text_sense"-->
+<!--            app:layout_constraintHorizontal_bias="0.4"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/text_sense"-->
+<!--            style="@style/home_page_neuro_sense_heading_style"-->
+<!--            android:layout_marginEnd="280dp"-->
+<!--            android:text="@string/sense"-->
+<!--            android:textColor="#A9D9D9"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toEndOf="@id/text_neuro"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
 
         <TextView
             android:id="@+id/text_home_page_sub_heading"

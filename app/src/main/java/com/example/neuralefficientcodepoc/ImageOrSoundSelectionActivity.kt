@@ -22,6 +22,7 @@ class ImageOrSoundSelectionActivity : AppCompatActivity() {
             val intent = Intent(this, SelectImageGalleryOrCapture::class.java)
             startActivity(intent)
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            finish()
         }
 
         binding.buttonSounds.setOnClickListener {
@@ -29,7 +30,9 @@ class ImageOrSoundSelectionActivity : AppCompatActivity() {
             val soundActivityIntent = Intent(this@ImageOrSoundSelectionActivity, SoundActivity::class.java)
             startActivity(soundActivityIntent)
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            finish()
         }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

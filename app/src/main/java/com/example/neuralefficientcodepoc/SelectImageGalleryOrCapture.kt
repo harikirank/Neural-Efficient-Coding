@@ -56,6 +56,8 @@ class SelectImageGalleryOrCapture : AppCompatActivity() {
         val mainViewModel by viewModels<SelectImageGalleryOrCaptureViewModel>()
         mAppExecutor = AppExecutor()
 
+        // Hide the image preview and view closer text
+        hidePreviewAndText()
 
         binding.captureImage.setOnClickListener {
             dispatchCaptureImageIntent()
@@ -99,6 +101,22 @@ class SelectImageGalleryOrCapture : AppCompatActivity() {
             binding.captureImage.isEnabled = true
             binding.buttonSelectImage.isEnabled = true
             binding.processImage.isEnabled = true
+        }
+
+        binding.buttonBack.setOnClickListener {
+            val homePageIntent =
+                Intent(this, ImageOrSoundSelectionActivity::class.java)
+            startActivity(homePageIntent)
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+            finish()
+        }
+
+        binding.buttonHome.setOnClickListener {
+            val homePageIntent =
+                Intent(this, ImageOrSoundSelectionActivity::class.java)
+            startActivity(homePageIntent)
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+            finish()
         }
 
         // --------------------------------------Permissions----------------------------------------
@@ -172,6 +190,24 @@ class SelectImageGalleryOrCapture : AppCompatActivity() {
         // -----------------------------------------------------------------------------------------
     }
 
+    override fun onBackPressed() {
+        val homePageIntent =
+            Intent(this, ImageOrSoundSelectionActivity::class.java)
+        startActivity(homePageIntent)
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+        finish()
+    }
+
+    private fun hidePreviewAndText() {
+        binding.imageSelectedImagePreview.visibility = View.INVISIBLE
+        binding.textViewCloser.visibility = View.INVISIBLE
+    }
+
+    private fun showPreviewAndText() {
+        binding.imageSelectedImagePreview.visibility = View.VISIBLE
+        binding.textViewCloser.visibility = View.VISIBLE
+    }
+
     private fun launchCamera() {
         // Create the capture image intent
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
@@ -230,6 +266,7 @@ class SelectImageGalleryOrCapture : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK && data != null) {
+            displayOptionsToViewAndProcessImage()
             processAndSetImage()
         }
 
@@ -243,6 +280,8 @@ class SelectImageGalleryOrCapture : AppCompatActivity() {
                 inputStream?.close()
 
                 binding.imageSelectedImagePreview.setImageBitmap(selectedBitmap)
+
+                displayOptionsToViewAndProcessImage()
                 showProcessButtonAndText()
             } else {
                 Toast.makeText(this, "the selected image didn't give anything", Toast.LENGTH_SHORT)
@@ -250,9 +289,16 @@ class SelectImageGalleryOrCapture : AppCompatActivity() {
             }
 
         }
+//        binding.buttonProcessImage.visibility = View.VISIBLE
+//        binding.processImage.visibility = View.VISIBLE
+//        binding.textViewCloser.visibility = View.VISIBLE
+    }
+
+    private fun displayOptionsToViewAndProcessImage() {
         binding.buttonProcessImage.visibility = View.VISIBLE
         binding.processImage.visibility = View.VISIBLE
         binding.textViewCloser.visibility = View.VISIBLE
+        binding.imageSelectedImagePreview.visibility = View.VISIBLE
     }
 
     private fun processAndSetImage() {

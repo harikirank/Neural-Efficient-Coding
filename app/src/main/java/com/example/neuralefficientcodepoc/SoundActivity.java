@@ -114,12 +114,19 @@ public class SoundActivity extends AppCompatActivity implements View.OnClickList
                 Intent homePageIntent = new Intent(SoundActivity.this, ImageOrSoundSelectionActivity.class);
                 startActivity(homePageIntent);
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+                finish();
                 break;
 
         }//End of switch cases
 
     }//End of onClick method
 
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(SoundActivity.this, ImageOrSoundSelectionActivity.class));
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+        finish();
+    }
 
     private void stopRecording() {
         String recordPath = SoundActivity.this.getExternalFilesDir("/").getAbsolutePath();
@@ -161,7 +168,7 @@ public class SoundActivity extends AppCompatActivity implements View.OnClickList
         //Here we determine where to store file. In this case in "root"
         String recordPath = SoundActivity.this.getExternalFilesDir("/").getAbsolutePath();
         //Here we format the date (local time)
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd_hh_mm_ss", Locale.US);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddhhmmss", Locale.US);
         Date now = new Date();
 
         recordFile = "Recording" + formatter.format(now);

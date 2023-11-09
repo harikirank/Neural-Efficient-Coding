@@ -29,6 +29,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
+import java.util.Comparator;
 
 
 public class audioList extends AppCompatActivity implements AudioListAdaptor.onItemListClick, View.OnClickListener {
@@ -85,6 +87,23 @@ public class audioList extends AppCompatActivity implements AudioListAdaptor.onI
         File directory = new File(path);
         allFiles = directory.listFiles();
 
+        if (allFiles != null) {
+            Arrays.sort(allFiles, new Comparator<File>() {
+                @Override
+                public int compare(File file1, File file2) {
+                    long lastModified1 = file1.lastModified();
+                    long lastModified2 = file2.lastModified();
+
+                    if (lastModified1 < lastModified2) {
+                        return 1; // Reverse the order (most recent first)
+                    } else if (lastModified1 > lastModified2) {
+                        return -1; // Reverse the order (most recent first)
+                    } else {
+                        return 0;
+                    }
+                }
+            });
+        }
 
         audioListAdaptor = new AudioListAdaptor(allFiles, this);
         audioList.setHasFixedSize(true);
