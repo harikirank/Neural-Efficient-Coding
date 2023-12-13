@@ -5,6 +5,8 @@ from matplotlib import pylab
 import matplotlib.pyplot as plt
 import matplotlib
 import random as random
+import sklearn.decomposition
+from sklearn import decomposition
 import wave
 from com.chaquo.python import Python
 
@@ -137,7 +139,12 @@ def collectPatchesAudio(file):
     for i in range(numPatches):
         x_start = np.random.randint(0, numSamples - ds * width - 2)
         audioPatches[i, :] = signal[x_start:x_start + ds * width - 1:ds]
-    return (audioPatches)
+
+    tmp = decomposition.FastICA(n_components=25)
+    fit = tmp.fit(audioPatches)
+    ica_comp = fit.components_
+
+    return (ica_comp)
 
 #this function displays audio patches
 def showPatchesAudio(patches):
@@ -155,6 +162,7 @@ def showPatchesAudio(patches):
     # Save the figure
     pylab.axis('off')
 
+    # This part is used to store the image to the android device.
     context = Python.getPlatform().getApplication()
     internal_storage_dir = context.getFilesDir().getAbsolutePath()
     subdirectory_name = SUBDIRECTORY_NAME_AUDIO
