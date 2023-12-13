@@ -19,7 +19,7 @@ class ImageOrSoundSelectionActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_image_or_sound_selection)
 
         binding.buttonImages.setOnClickListener {
-            val intent = Intent(this, SelectImageGalleryOrCapture::class.java)
+            val intent = Intent(this@ImageOrSoundSelectionActivity, SelectImageGalleryOrCapture::class.java)
             startActivity(intent)
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
             finish()

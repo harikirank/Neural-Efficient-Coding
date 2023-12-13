@@ -178,11 +178,5 @@
             app:srcCompat="@drawable/neurosensebrainm"
             tools:srcCompat="@drawable/neurosensebrainm" />
 
-        <androidx.constraintlayout.widget.Group
-            android:id="@+id/group"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:constraint_referenced_ids="text_neuro,text_sense" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
