@@ -12,7 +12,32 @@
         android:layout_height="match_parent"
         tools:context=".SoundProcessedResults">
 
+        <TextView
+            android:id="@+id/backgroundColor_imageActivity"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/app_background_color"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
         <ImageButton
+            android:id="@+id/resultImage_Back_Btn"
+            android:layout_width="58dp"
+            android:layout_height="46dp"
+            android:background="#317173"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.014"
+            app:srcCompat="@drawable/back_button_white35px" />
+
+       <!-- <ImageButton
             android:id="@+id/resultImage_Back_Btn"
             android:layout_width="58dp"
             android:layout_height="46dp"
@@ -23,27 +48,106 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.025"
-            app:srcCompat="@drawable/back_button_black35px" />
+            app:srcCompat="@drawable/back_button_black35px" />-->
 
         <ImageButton
             android:id="@+id/resultImage_Home_Btn"
             android:layout_width="58dp"
             android:layout_height="46dp"
-            android:background="#FAFAFA"
+            android:background="#317173"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.975"
+            app:layout_constraintHorizontal_bias="0.988"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.025"
-            app:srcCompat="@drawable/home_button_black48px" />
+            app:layout_constraintVertical_bias="0.014"
+            app:srcCompat="@drawable/home_white_icon48px" />
 
-        <ImageView
+<!--        <ImageButton-->
+<!--            android:id="@+id/resultImage_Home_Btn"-->
+<!--            android:layout_width="58dp"-->
+<!--            android:layout_height="46dp"-->
+<!--            android:background="#FAFAFA"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintHorizontal_bias="0.975"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:layout_constraintVertical_bias="0.025"-->
+<!--            app:srcCompat="@drawable/home_button_black48px" />-->
+
+        <TextView
+            android:id="@+id/textView15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/avenir"
+            android:text="Audio"
+            android:textColor="#A4CFCB"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/backgroundColor_imageActivity"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/textView7"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.19" />
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/avenir"
+            android:text="Neural Fields: "
+            android:textColor="#FFFFFF"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/backgroundColor_imageActivity"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.19" />
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="wrap_content"
+            android:layout_height="250dp"
+            android:fontFamily="@font/avenir"
+            android:text="These are randomly collected patches generated by the efficient code used in neurosense.              \n\nNotice how if you process the same audio again you will be able to see a new section of your brain in action."
+            android:textAlignment="center"
+            android:padding="8dp"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="@+id/backgroundColor_imageActivity"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.495"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/backgroundColor_imageActivity"
+            app:layout_constraintVertical_bias="1.07" />
+
+
+        <!--<ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_constraintTop_toBottomOf="@id/resultImage_Home_Btn"
             android:id="@+id/audio_processed_image"
             />
+-->
+
+        <ImageView
+            android:id="@+id/audio_processed_image"
+            android:layout_width="500dp"
+            android:layout_height="500dp"
+            android:layout_marginStart="116dp"
+            android:padding="12dp"
+            android:layout_marginTop="459dp"
+            android:layout_marginEnd="116dp"
+            android:layout_marginBottom="114dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/processbw" />
 
 
 <!--        <include-->
