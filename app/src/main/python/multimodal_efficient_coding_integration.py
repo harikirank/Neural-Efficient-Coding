@@ -1,7 +1,15 @@
 import ica_helper_methods
 import sklearn.decomposition
 import numpy as np
+from io import BytesIO
+from PIL import Image
+import os
+from com.chaquo.python import Python
 
+
+
+SUBDIRECTORY_NAME_TMP_IMAGES = 'temporary_images'
+TMP_IMAGE_NAME = 'image_selected_from_gallery.jpg'
 
 def process_captured_image(image_path):
     num_patches = 50000
@@ -20,7 +28,19 @@ def process_captured_image(image_path):
     return output_processed_image_path
 
 
-def process_image(image_path):
+def process_selected_image(image_bytes):
+    image = Image.open(BytesIO(image_bytes))
+
+    # This part is used to store the image to the android device.
+    context = Python.getPlatform().getApplication()
+    internal_storage_dir = context.getFilesDir().getAbsolutePath()
+    subdirectory_path = os.path.join(internal_storage_dir, SUBDIRECTORY_NAME_TMP_IMAGES)
+    if not os.path.exists(subdirectory_path):
+        os.makedirs(subdirectory_path)
+
+    image_path = os.path.join(subdirectory_path, TMP_IMAGE_NAME)
+    image.save(image_path)
+
     num_patches = 50000
     patch_width = 16
     num_patches_to_show = 25

@@ -303,7 +303,7 @@ class SelectImageGalleryOrCapture : AppCompatActivity() {
                 selectedBitmap = BitmapFactory.decodeStream(inputStream)
 
                 val byteStreamTemp = ByteArrayOutputStream()
-                selectedBitmap.compress(Bitmap.CompressFormat.PNG, 100, byteStreamTemp)
+                selectedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteStreamTemp)
                 byteStreamOfSelectedImage = byteStreamTemp.toByteArray()
                 isCaptured = false
 

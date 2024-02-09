@@ -44,7 +44,7 @@ class SelectImageGalleryOrCaptureViewModel(application: Application) :
             val py = app.pythonInstance
 
             val imageProcessor = py.getModule("multimodal_efficient_coding_integration")
-            val outputImagePathAfterProcessing = imageProcessor.callAttr("process_image",
+            val outputImagePathAfterProcessing = imageProcessor.callAttr("process_selected_image",
                 byteArrayOfSelectedImage
             )
 
