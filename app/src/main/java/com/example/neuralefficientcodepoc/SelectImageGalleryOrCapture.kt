@@ -142,10 +142,6 @@ class SelectImageGalleryOrCapture : AppCompatActivity() {
 
 
         // --------------------------------------Permissions----------------------------------------
-        askForFileReadingPermission()
-        // -----------------------------------------------------------------------------------------
-
-        //--------------------------------------------------------------------------------------------------
         // Check if permissions are required and not granted
         val readPermissionGranted = ContextCompat.checkSelfPermission(
             this,
@@ -186,34 +182,6 @@ class SelectImageGalleryOrCapture : AppCompatActivity() {
             // Permission is already granted or not required, you can proceed with file access
         }
         // -----------------------------------------------------------------------------------------
-    }
-
-    private fun askForFileReadingPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            if (Environment.isExternalStorageManager()) {
-                // Permission is already granted
-                // Proceed with your image selection code
-            } else {
-                // Request the permission
-                val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
-                intent.data = Uri.parse("package:$packageName")
-                startActivityForResult(intent, MANAGE_EXTERNAL_STORAGE_REQUEST)
-            }
-        } else {
-            // For devices running Android 10 (API 29) and below
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED
-            ) {
-                ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
-                    MANAGE_EXTERNAL_STORAGE_REQUEST
-                )
-            } else {
-                // Permission is already granted
-                // Proceed with your image selection code
-            }
-        }
     }
 
     override fun onBackPressed() {
