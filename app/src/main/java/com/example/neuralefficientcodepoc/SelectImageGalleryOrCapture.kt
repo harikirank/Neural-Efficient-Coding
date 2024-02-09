@@ -48,68 +48,60 @@ class SelectImageGalleryOrCapture : AppCompatActivity() {
     private var imagePath: String? = null
     private lateinit var progressBarDialogFragment: ProgressBarDialogFragment
     private val FILE_PROVIDER_AUTHORITY = "com.example.neuralefficientcodepoc.fileprovider"
+    private var isCaptured: Boolean? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding =
             DataBindingUtil.setContentView(this, R.layout.activity_select_image_gallery_or_capture)
         hideActionBar()
-        val mainViewModel by viewModels<SelectImageGalleryOrCaptureViewModel>()
+        val selectImageGalleryOrCaptureViewModel by viewModels<SelectImageGalleryOrCaptureViewModel>()
         mAppExecutor = AppExecutor()
 
         // Hide the image preview and view closer text
         hidePreviewAndText()
 
+        binding.selectImageFromGallery.setOnClickListener {
+//            if (!checkStoragePermissions(this)) {
+//                Toast.makeText(this,
+//                    "Permissions required to select image from gallery!",
+//                    Toast.LENGTH_SHORT)
+//                    .show()
+//                AskForFileReadingPermission()
+//            } else {
+            dispatchPickImageIntent()
+//            }
+        }
+
         binding.captureImage.setOnClickListener {
-            dispatchCaptureImageIntent()
+            launchCamera()
         }
-
-        binding.buttonSelectImage.setOnClickListener {
-            if (!checkStoragePermissions(this)) {
-                Toast.makeText(this, "Permissions required to select image from gallery!", Toast.LENGTH_SHORT)
-                    .show()
-                AskForFileReadingPermission()
-            } else {
-                dispatchPickImageIntent()
-            }
-        }
-
-        binding.buttonProcessImage.setOnClickListener {
-            if (::selectedBitmap.isInitialized) {
-                // progressBarDialogFragment = ProgressBarDialogFragment()
-                // progressBarDialogFragment.show(supportFragmentManager, "progressDialog")
-                // or
-                progressDialog = ProgressDialog(this)
-                progressDialog?.show()
-                progressDialog?.setContentView(R.layout.progress_dialog)
-                progressDialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
-                progressDialog?.setCancelable(false)
-                // Start a Coroutine to perform the time-consuming task
-                CoroutineScope(Dispatchers.Main).launch {
-                    mainViewModel.processImage(
-                        imagePath!!)
-                }
-            } else {
-                Toast.makeText(this, "Please select an image!", Toast.LENGTH_SHORT).show()
-            }
-        }
-
         binding.buttonTakePicture.setOnClickListener {
             launchCamera()
         }
 
-        mainViewModel.outputProcessedImagePath.observe(this) {
-            progressDialog?.dismiss()
-
-            val intent = Intent(this, ShowICAPatchesActivity::class.java)
-            intent.putExtra("output_image_path", it)
-            startActivity(intent)
-
-            binding.captureImage.isEnabled = true
-            binding.buttonSelectImage.isEnabled = true
-            binding.processImage.isEnabled = true
+        binding.buttonProcessImage.setOnClickListener {
+            // Process separately for captured image and image selected from gallery
+            if (isCaptured != null && isCaptured == true) {
+                if (::selectedBitmap.isInitialized) {
+                    progressDialog = ProgressDialog(this)
+                    progressDialog?.show()
+                    progressDialog?.setContentView(R.layout.progress_dialog)
+                    progressDialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
+                    progressDialog?.setCancelable(false)
+                    // Start a Coroutine to perform the time-consuming task
+                    CoroutineScope(Dispatchers.Main).launch {
+                        selectImageGalleryOrCaptureViewModel.processImage(
+                            imagePath!!)
+                    }
+                } else {
+                    Toast.makeText(this, "Please select an image!", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
 
+
+        // Navigation Handlers
         binding.buttonBack.setOnClickListener {
             val homePageIntent =
                 Intent(this, ImageOrSoundSelectionActivity::class.java)
@@ -125,9 +117,24 @@ class SelectImageGalleryOrCapture : AppCompatActivity() {
             overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
             finish()
         }
+        // Navigation Handlers end
+
+
+        selectImageGalleryOrCaptureViewModel.outputProcessedImagePath.observe(this) {
+            progressDialog?.dismiss()
+
+            val intent = Intent(this, ShowICAPatchesActivity::class.java)
+            intent.putExtra("output_image_path", it)
+            startActivity(intent)
+
+            binding.captureImage.isEnabled = true
+            binding.selectImageFromGallery.isEnabled = true
+            binding.processImage.isEnabled = true
+        }
+
 
         // --------------------------------------Permissions----------------------------------------
-        AskForFileReadingPermission()
+        askForFileReadingPermission()
         // -----------------------------------------------------------------------------------------
 
         //--------------------------------------------------------------------------------------------------
@@ -173,7 +180,7 @@ class SelectImageGalleryOrCapture : AppCompatActivity() {
         // -----------------------------------------------------------------------------------------
     }
 
-    private fun SelectImageGalleryOrCapture.AskForFileReadingPermission() {
+    private fun askForFileReadingPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             if (Environment.isExternalStorageManager()) {
                 // Permission is already granted
@@ -256,15 +263,6 @@ class SelectImageGalleryOrCapture : AppCompatActivity() {
         supportActionBar?.hide()
     }
 
-    private fun dispatchCaptureImageIntent() {
-        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        try {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
-        } catch (e: ActivityNotFoundException) {
-            // Handle the case where the camera app is not available
-        }
-    }
-
     private fun dispatchPickImageIntent() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         try {
@@ -278,7 +276,8 @@ class SelectImageGalleryOrCapture : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK && data != null) {
             displayOptionsToViewAndProcessImage()
-            processAndSetImage()
+            saveCapturedImageLocallyToDevice()
+            isCaptured = true
         }
 
         if (requestCode == REQUEST_CODE_PICK_IMAGE && resultCode == RESULT_OK && data != null) {
@@ -326,7 +325,7 @@ class SelectImageGalleryOrCapture : AppCompatActivity() {
         binding.imageSelectedImagePreview.visibility = View.VISIBLE
     }
 
-    private fun processAndSetImage() {
+    private fun saveCapturedImageLocallyToDevice() {
         // Resample the saved image to fit the ImageView
         mResultsBitmap = BitmapUtils.resamplePic(this, currentPhotoPath)
         selectedBitmap = BitmapFactory.decodeFile(currentPhotoPath)

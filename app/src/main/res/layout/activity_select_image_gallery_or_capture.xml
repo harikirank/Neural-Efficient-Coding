@@ -120,7 +120,7 @@
             app:layout_constraintVertical_bias="0.105" />
 
         <ImageButton
-            android:id="@+id/button_select_image"
+            android:id="@+id/select_image_from_gallery"
             android:layout_width="86dp"
             android:layout_height="73dp"
             android:background="@color/colorPrimary"
@@ -160,7 +160,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.875"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button_select_image"
+            app:layout_constraintTop_toBottomOf="@+id/select_image_from_gallery"
             app:layout_constraintVertical_bias="0.0" />
 
         <TextView
@@ -176,7 +176,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.125"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button_select_image"
+            app:layout_constraintTop_toBottomOf="@+id/select_image_from_gallery"
             app:layout_constraintVertical_bias="0.0" />
 
         <TextView
