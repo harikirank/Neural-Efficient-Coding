@@ -7,6 +7,7 @@ import matplotlib
 import random as random
 import sklearn.decomposition
 from sklearn import decomposition
+import time
 import wave
 from com.chaquo.python import Python
 
@@ -103,21 +104,23 @@ def showPatchesBW(prePatches, showPatchNum=16, display=True):
         patchImg[x_i * (pw + bw):x_i * (pw + bw) + pw,
         y_i * (pw + bw):y_i * (pw + bw) + pw] = fullPatch
 
-    # Store the image into the android application.
-    pylab.imshow(patchImg.T, interpolation='nearest', cmap='bone')
-    pylab.axis('off')
 
-    context = Python.getPlatform().getApplication()
-    internal_storage_dir = context.getFilesDir().getAbsolutePath()
-    subdirectory_name = SUBDIRECTORY_NAME
-    subdirectory_path = os.path.join(internal_storage_dir, subdirectory_name)
-    if not os.path.exists(subdirectory_path):
-        os.makedirs(subdirectory_path)
+        # Store the image into the android application.
+        pylab.imshow(patchImg.T, interpolation='nearest', cmap='bone')
+        pylab.axis('off')
 
-    image_file_name = OUTPUT_IMAGE_NAME  # Replace with your desired file name
-    image_path = os.path.join(subdirectory_path, image_file_name)
-    pylab.savefig(image_path)
+        context = Python.getPlatform().getApplication()
+        internal_storage_dir = context.getFilesDir().getAbsolutePath()
+        subdirectory_name = SUBDIRECTORY_NAME
+        subdirectory_path = os.path.join(internal_storage_dir, subdirectory_name)
+        if not os.path.exists(subdirectory_path):
+            os.makedirs(subdirectory_path)
 
+        image_file_name = OUTPUT_IMAGE_NAME  # Replace with your desired file name
+        image_path = os.path.join(subdirectory_path, image_file_name)
+        pylab.savefig(image_path)
+
+    plt.close()
     return image_path
 
 
@@ -150,29 +153,26 @@ def collectPatchesAudio(file):
 def showPatchesAudio(patches):
     width = 100
     cnt = 0
-    for cnt in range(20):
-        plt.subplot(5, 5, cnt+1)
+    for cnt in range(16):
+        plt.subplot(4, 4, cnt+1)
         frame = pylab.gca()
         frame.axes.get_xaxis().set_ticklabels([])
         frame.axes.get_yaxis().set_ticklabels([])
+        plt.axis("on")
         plt.plot(range(width),patches[cnt,:])
-    plt.show()
 
 
-    # Save the figure
-    pylab.axis('off')
+        # This part is used to store the image to the android device.
+        context = Python.getPlatform().getApplication()
+        internal_storage_dir = context.getFilesDir().getAbsolutePath()
+        subdirectory_name = SUBDIRECTORY_NAME_AUDIO
+        subdirectory_path = os.path.join(internal_storage_dir, subdirectory_name)
+        if not os.path.exists(subdirectory_path):
+            os.makedirs(subdirectory_path)
 
-    # This part is used to store the image to the android device.
-    context = Python.getPlatform().getApplication()
-    internal_storage_dir = context.getFilesDir().getAbsolutePath()
-    subdirectory_name = SUBDIRECTORY_NAME_AUDIO
-    subdirectory_path = os.path.join(internal_storage_dir, subdirectory_name)
-    if not os.path.exists(subdirectory_path):
-        os.makedirs(subdirectory_path)
-
-    output_audio_image_name = OUTPUT_AUDIO_IMAGE_NAME  # Replace with your desired file name
-    audio_image_path = os.path.join(subdirectory_path, output_audio_image_name)
-    pylab.savefig(audio_image_path)
+        output_audio_image_name = OUTPUT_AUDIO_IMAGE_NAME  # Replace with your desired file name
+        audio_image_path = os.path.join(subdirectory_path, output_audio_image_name)
+        pylab.savefig(audio_image_path)
     plt.close()
 
     return audio_image_path

@@ -13,163 +13,172 @@
         android:theme="@style/AppTheme"
         tools:context=".HomePageActivity">
 
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/center_horizontal_guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.50" />
 
-        <TextView
-            android:id="@+id/brief_description_neuroscience"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/child_const_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
+            android:layout_height="0dp"
             android:background="@drawable/app_background_color"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintBottom_toTopOf="@id/center_horizontal_guideline"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/text_test_neuro"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/neuro"
-            android:textSize="55sp"
-            android:textStyle="bold"
-            android:fontFamily="@font/noway_regular"
-            android:textColor="#fff"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginRight="120dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/text_test_sense"
-            app:layout_constraintStart_toEndOf="@id/text_test_neuro"
-            android:text="@string/sense"
-            android:textColor="#A9D9D9"
-            android:fontFamily="@font/noway_regular"
-            android:textSize="55sp"
-            android:textStyle="bold"
-            app:layout_constraintTop_toTopOf="@id/text_test_neuro"
-            />
 
-<!--        <TextView-->
-<!--            android:id="@+id/text_neuro"-->
-<!--            style="@style/home_page_neuro_sense_heading_style"-->
-<!--            android:layout_marginStart="300dp"-->
-<!--            android:text="@string/neuro"-->
-<!--            android:textColor="#FFFFFF"-->
-<!--            app:layout_constraintEnd_toStartOf="@id/text_sense"-->
-<!--            app:layout_constraintHorizontal_bias="0.4"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent" />-->
+            <TextView
+                android:id="@+id/text_test_neuro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="120dp"
+                android:fontFamily="@font/noway_regular"
+                android:text="@string/neuro"
+                android:textColor="#fff"
+                android:textSize="55sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-<!--        <TextView-->
-<!--            android:id="@+id/text_sense"-->
-<!--            style="@style/home_page_neuro_sense_heading_style"-->
-<!--            android:layout_marginEnd="280dp"-->
-<!--            android:text="@string/sense"-->
-<!--            android:textColor="#A9D9D9"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toEndOf="@id/text_neuro"-->
-<!--            app:layout_constraintTop_toTopOf="parent" />-->
+            <TextView
+                android:id="@+id/text_test_sense"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/noway_regular"
+                android:text="@string/sense"
+                android:textColor="#A9D9D9"
+                android:textSize="55sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@id/text_test_neuro"
+                app:layout_constraintTop_toTopOf="@id/text_test_neuro" />
 
-        <TextView
-            android:id="@+id/text_home_page_sub_heading"
-            android:layout_width="320dp"
-            android:layout_height="220dp"
-            android:layout_marginStart="36dp"
-            android:layout_marginTop="96dp"
-            android:fontFamily="@font/avenir"
-            android:lineSpacingMultiplier="1.4"
-            android:text="@string/now_you_can_see_the_receptive_fields_generated_from_images_and_audio_clips_that_match_the_ones_made_by_neurons_in_your_brain"
-            android:textAlignment="center"
-            android:textColor="#FFFFFF"
-            android:textSize="25sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <!--        <TextView-->
+            <!--            android:id="@+id/text_neuro"-->
+            <!--            style="@style/home_page_neuro_sense_heading_style"-->
+            <!--            android:layout_marginStart="300dp"-->
+            <!--            android:text="@string/neuro"-->
+            <!--            android:textColor="#FFFFFF"-->
+            <!--            app:layout_constraintEnd_toStartOf="@id/text_sense"-->
+            <!--            app:layout_constraintHorizontal_bias="0.4"-->
+            <!--            app:layout_constraintStart_toStartOf="parent"-->
+            <!--            app:layout_constraintTop_toTopOf="parent" />-->
 
-        <ImageButton
-            android:id="@+id/button_sounds"
-            android:layout_width="107dp"
-            android:layout_height="96dp"
-            android:backgroundTint="#FAFAFA"
-            android:contentDescription="@string/person_speaking"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.835"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/brief_description_neuroscience"
-            app:layout_constraintVertical_bias="0.401"
-            app:srcCompat="@drawable/voice_recognition_100px"
-            tools:srcCompat="@drawable/voice_recognition_100px" />
+            <!--        <TextView-->
+            <!--            android:id="@+id/text_sense"-->
+            <!--            style="@style/home_page_neuro_sense_heading_style"-->
+            <!--            android:layout_marginEnd="280dp"-->
+            <!--            android:text="@string/sense"-->
+            <!--            android:textColor="#A9D9D9"-->
+            <!--            app:layout_constraintEnd_toEndOf="parent"-->
+            <!--            app:layout_constraintStart_toEndOf="@id/text_neuro"-->
+            <!--            app:layout_constraintTop_toTopOf="parent" />-->
 
-        <TextView
-            android:id="@+id/text_sounds"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/avenir"
-            android:text="@string/sounds"
-            android:textColor="#000"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.785"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button_sounds"
-            app:layout_constraintVertical_bias="0.0" />
+            <TextView
+                android:id="@+id/text_home_page_sub_heading"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-48dp"
+                android:fontFamily="@font/avenir"
+                android:lineSpacingMultiplier="1.5"
+                android:padding="14dp"
+                android:text="@string/now_you_can_see_the_receptive_fields_generated_from_images_and_audio_clips_that_match_the_ones_made_by_neurons_in_your_brain"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_test_sense" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <ImageButton
-            android:id="@+id/button_images"
-            android:layout_width="107dp"
-            android:layout_height="96dp"
-            android:backgroundTint="#FAFAFA"
-            android:contentDescription="@string/three_by_three_squares_black"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.167"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/brief_description_neuroscience"
-            app:layout_constraintVertical_bias="0.396"
-            app:srcCompat="@drawable/tiles_black_100px"
-            tools:srcCompat="@drawable/tiles_black_100px" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/picPreview"
+            app:layout_constraintTop_toBottomOf="@id/child_const_layout">
 
-        <TextView
-            android:id="@+id/text_try_it_out"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/avenir"
-            android:text="@string/try_it_out"
-            android:textColor="#000000"
-            android:textSize="30sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias=".56" />
+            <TextView
+                android:id="@+id/text_try_it_out"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:fontFamily="@font/avenir"
+                android:text="@string/try_it_out"
+                android:textColor="#000000"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/text_images"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/avenir"
-            android:text="Images"
-            android:textColor="#000000"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.181"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button_images"
-            app:layout_constraintVertical_bias="0.011" />
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/center_guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.50" />
 
+            <ImageButton
+                android:id="@+id/button_images"
+                android:layout_width="107dp"
+                android:layout_height="96dp"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="#FAFAFA"
+                android:contentDescription="@string/three_by_three_squares_black"
+                app:layout_constraintEnd_toEndOf="@id/center_guideline"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_try_it_out"
+                app:srcCompat="@drawable/tiles_black_100px"
+                tools:srcCompat="@drawable/tiles_black_100px" />
+
+
+            <TextView
+                android:id="@+id/text_images"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/avenir"
+                android:text="Images"
+                android:textColor="#000000"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@id/button_images"
+                app:layout_constraintStart_toStartOf="@id/button_images"
+                app:layout_constraintTop_toBottomOf="@+id/button_images" />
+
+            <ImageButton
+                android:id="@+id/button_sounds"
+                android:layout_width="107dp"
+                android:layout_height="96dp"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="#FAFAFA"
+                android:contentDescription="@string/person_speaking"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/center_guideline"
+                app:layout_constraintTop_toBottomOf="@id/text_try_it_out"
+                app:srcCompat="@drawable/voice_recognition_100px"
+                tools:srcCompat="@drawable/voice_recognition_100px" />
+
+            <TextView
+                android:id="@+id/text_sounds"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/avenir"
+                android:text="@string/sounds"
+                android:textColor="#000"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/button_sounds"
+                app:layout_constraintTop_toBottomOf="@+id/button_sounds"
+                app:layout_constraintVertical_bias="0.0" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ImageView
             android:id="@+id/picPreview"
             android:layout_width="52dp"
             android:layout_height="69dp"
-            android:layout_gravity="center_horizontal"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
             android:adjustViewBounds="true"

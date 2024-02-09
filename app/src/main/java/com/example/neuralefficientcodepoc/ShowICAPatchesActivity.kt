@@ -1,5 +1,6 @@
 package com.example.neuralefficientcodepoc
 
+import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -31,6 +32,22 @@ class ShowICAPatchesActivity : AppCompatActivity() {
         } else {
             // Handle the case where the file does not exist
             // For example, you can show a placeholder image or a message
+        }
+
+        binding.imageProcessHomeBtn?.setOnClickListener {
+            val homePageIntent = Intent(this,
+                ImageOrSoundSelectionActivity::class.java)
+            startActivity(homePageIntent)
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+            finish()
+        }
+
+        binding.imageProcessBackBtn?.setOnClickListener {
+            val homePageIntent =
+                Intent(this, SelectImageGalleryOrCapture::class.java)
+            startActivity(homePageIntent)
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+            finish()
         }
     }
 

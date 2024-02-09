@@ -3,6 +3,7 @@ package com.example.neuralefficientcodepoc
 import android.Manifest
 import android.app.ProgressDialog
 import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -64,7 +65,13 @@ class SelectImageGalleryOrCapture : AppCompatActivity() {
         }
 
         binding.buttonSelectImage.setOnClickListener {
-            dispatchPickImageIntent()
+            if (!checkStoragePermissions(this)) {
+                Toast.makeText(this, "Permissions required to select image from gallery!", Toast.LENGTH_SHORT)
+                    .show()
+                AskForFileReadingPermission()
+            } else {
+                dispatchPickImageIntent()
+            }
         }
 
         binding.buttonProcessImage.setOnClickListener {
@@ -120,31 +127,7 @@ class SelectImageGalleryOrCapture : AppCompatActivity() {
         }
 
         // --------------------------------------Permissions----------------------------------------
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            if (Environment.isExternalStorageManager()) {
-                // Permission is already granted
-                // Proceed with your image selection code
-            } else {
-                // Request the permission
-                val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
-                intent.data = Uri.parse("package:$packageName")
-                startActivityForResult(intent, MANAGE_EXTERNAL_STORAGE_REQUEST)
-            }
-        } else {
-            // For devices running Android 10 (API 29) and below
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED
-            ) {
-                ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
-                    MANAGE_EXTERNAL_STORAGE_REQUEST
-                )
-            } else {
-                // Permission is already granted
-                // Proceed with your image selection code
-            }
-        }
+        AskForFileReadingPermission()
         // -----------------------------------------------------------------------------------------
 
         //--------------------------------------------------------------------------------------------------
@@ -188,6 +171,34 @@ class SelectImageGalleryOrCapture : AppCompatActivity() {
             // Permission is already granted or not required, you can proceed with file access
         }
         // -----------------------------------------------------------------------------------------
+    }
+
+    private fun SelectImageGalleryOrCapture.AskForFileReadingPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            if (Environment.isExternalStorageManager()) {
+                // Permission is already granted
+                // Proceed with your image selection code
+            } else {
+                // Request the permission
+                val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
+                intent.data = Uri.parse("package:$packageName")
+                startActivityForResult(intent, MANAGE_EXTERNAL_STORAGE_REQUEST)
+            }
+        } else {
+            // For devices running Android 10 (API 29) and below
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED
+            ) {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                    MANAGE_EXTERNAL_STORAGE_REQUEST
+                )
+            } else {
+                // Permission is already granted
+                // Proceed with your image selection code
+            }
+        }
     }
 
     override fun onBackPressed() {
@@ -292,6 +303,20 @@ class SelectImageGalleryOrCapture : AppCompatActivity() {
 //        binding.buttonProcessImage.visibility = View.VISIBLE
 //        binding.processImage.visibility = View.VISIBLE
 //        binding.textViewCloser.visibility = View.VISIBLE
+    }
+
+    fun checkStoragePermissions(context: Context): Boolean {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            // For Android 11 (API level 30) and above, check if MANAGE_EXTERNAL_STORAGE permission is granted.
+            Environment.isExternalStorageManager()
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            // For Android 6 (API level 23) to Android 10 (API level 29), check for READ_EXTERNAL_STORAGE permission.
+            ContextCompat.checkSelfPermission(context,
+                Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+        } else {
+            // Before Android 6 (API level 23), permissions are granted at install time.
+            true
+        }
     }
 
     private fun displayOptionsToViewAndProcessImage() {
