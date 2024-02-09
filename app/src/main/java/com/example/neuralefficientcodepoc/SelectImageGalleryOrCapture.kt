@@ -91,7 +91,7 @@ class SelectImageGalleryOrCapture : AppCompatActivity() {
                     progressDialog?.setCancelable(false)
                     // Start a Coroutine to perform the time-consuming task
                     CoroutineScope(Dispatchers.Main).launch {
-                        selectImageGalleryOrCaptureViewModel.processImage(
+                        selectImageGalleryOrCaptureViewModel.processCapturedImage(
                             imagePath!!)
                     }
                 } else {
