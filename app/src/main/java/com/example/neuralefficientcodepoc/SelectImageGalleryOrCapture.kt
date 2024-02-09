@@ -27,6 +27,7 @@ import com.example.neuralefficientcodepoc.databinding.ActivitySelectImageGallery
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
 
@@ -49,6 +50,7 @@ class SelectImageGalleryOrCapture : AppCompatActivity() {
     private lateinit var progressBarDialogFragment: ProgressBarDialogFragment
     private val FILE_PROVIDER_AUTHORITY = "com.example.neuralefficientcodepoc.fileprovider"
     private var isCaptured: Boolean? = null
+    private var byteStreamOfSelectedImage: ByteArray? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,7 +71,7 @@ class SelectImageGalleryOrCapture : AppCompatActivity() {
 //                    .show()
 //                AskForFileReadingPermission()
 //            } else {
-            dispatchPickImageIntent()
+            pickImageFromUsersDevice()
 //            }
         }
 
@@ -96,6 +98,20 @@ class SelectImageGalleryOrCapture : AppCompatActivity() {
                     }
                 } else {
                     Toast.makeText(this, "Please select an image!", Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                if (::selectedBitmap.isInitialized && byteStreamOfSelectedImage != null) {
+                    progressDialog = ProgressDialog(this)
+                    progressDialog?.show()
+                    progressDialog?.setContentView(R.layout.progress_dialog)
+                    progressDialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
+                    progressDialog?.setCancelable(false)
+
+                    // Start a Coroutine to perform the time-consuming task
+                    CoroutineScope(Dispatchers.Main).launch {
+                        selectImageGalleryOrCaptureViewModel.processImageSelectedFromDevice(
+                            byteStreamOfSelectedImage!!)
+                    }
                 }
             }
         }
@@ -263,7 +279,7 @@ class SelectImageGalleryOrCapture : AppCompatActivity() {
         supportActionBar?.hide()
     }
 
-    private fun dispatchPickImageIntent() {
+    private fun pickImageFromUsersDevice() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         try {
             startActivityForResult(intent, REQUEST_CODE_PICK_IMAGE)
@@ -285,6 +301,12 @@ class SelectImageGalleryOrCapture : AppCompatActivity() {
                 val selectedImage: Uri = data.data!!
                 val inputStream = contentResolver.openInputStream(selectedImage)
                 selectedBitmap = BitmapFactory.decodeStream(inputStream)
+
+                val byteStreamTemp = ByteArrayOutputStream()
+                selectedBitmap.compress(Bitmap.CompressFormat.PNG, 100, byteStreamTemp)
+                byteStreamOfSelectedImage = byteStreamTemp.toByteArray()
+                isCaptured = false
+
                 imagePath = getImagePathFromUri(data.data!!)
 
                 inputStream?.close()

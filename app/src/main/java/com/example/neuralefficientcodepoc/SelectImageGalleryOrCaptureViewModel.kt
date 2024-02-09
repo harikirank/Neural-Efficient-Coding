@@ -25,7 +25,7 @@ class SelectImageGalleryOrCaptureViewModel(application: Application) :
             val py = app.pythonInstance
 
             val imageProcessor = py.getModule("multimodal_efficient_coding_integration")
-            val outputImagePathAfterProcessing = imageProcessor.callAttr("process_image",
+            val outputImagePathAfterProcessing = imageProcessor.callAttr("process_captured_image",
                 imagePath
             )
 
@@ -36,4 +36,24 @@ class SelectImageGalleryOrCaptureViewModel(application: Application) :
             }
         }
     }
+
+    fun processImageSelectedFromDevice(
+        byteArrayOfSelectedImage: ByteArray,
+    ) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val py = app.pythonInstance
+
+            val imageProcessor = py.getModule("multimodal_efficient_coding_integration")
+            val outputImagePathAfterProcessing = imageProcessor.callAttr("process_image",
+                byteArrayOfSelectedImage
+            )
+
+            withContext(Dispatchers.Main) {
+                if (outputImagePathAfterProcessing != null) {
+                    _outputProcessedImagePath.value = outputImagePathAfterProcessing.toString()
+                }
+            }
+        }
+    }
+
 }
