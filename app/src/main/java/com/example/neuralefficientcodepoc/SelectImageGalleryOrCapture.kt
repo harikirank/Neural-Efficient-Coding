@@ -64,15 +64,7 @@ class SelectImageGalleryOrCapture : AppCompatActivity() {
         hidePreviewAndText()
 
         binding.selectImageFromGallery.setOnClickListener {
-//            if (!checkStoragePermissions(this)) {
-//                Toast.makeText(this,
-//                    "Permissions required to select image from gallery!",
-//                    Toast.LENGTH_SHORT)
-//                    .show()
-//                AskForFileReadingPermission()
-//            } else {
             pickImageFromUsersDevice()
-//            }
         }
 
         binding.captureImage.setOnClickListener {
